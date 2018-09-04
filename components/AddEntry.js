@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView, TouchableOpacity, TouchableNativeFeedback, Text } from 'react-native'
+import { View, ScrollView, TouchableOpacity, TouchableNativeFeedback, Text, Platform, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers'
@@ -11,12 +11,16 @@ import DateHeader from './DateHeader'
 import TrackerSlider from './TrackerSlider'
 import TrackerStepper from './TrackerStepper'
 import TextButton from './TextButton'
+import { white, purple } from '../utils/colors'
 
 function SubmitBtn({ onPress }) {
   return (
-    <TouchableNativeFeedback onPress={onPress}>
+    <TouchableNativeFeedback 
+      style={ Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androindSubmitBtn }
+      onPress={onPress}
+    >
       <View>
-        <Text>Submit</Text>
+        <Text style={styles.submitBtnText}>Submit</Text>
       </View>
     </TouchableNativeFeedback>
   )
@@ -106,13 +110,13 @@ class AddEntry extends Component {
 
     if ( this.props.alreadyLogged ) {
       return (
-        <View>
+        <View style={styles.center}>
           <Ionicons
-            name='ios-happy-outline'
+            name={Platform.OS === 'ios' ? 'ios-happy-outline' : 'md-happy'}
             size={100}
           />
           <Text>You've already logged your information for today!</Text>
-          <TextButton onPress={this.reset}>
+          <TextButton style={{padding: 10}} onPress={this.reset}>
             Reset
           </TextButton>
         </View>
@@ -120,14 +124,14 @@ class AddEntry extends Component {
     }
 
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <DateHeader date={(new Date()).toLocaleDateString()} />
         {Object.keys(metaInfo).map((key) => {
           const { getIcon, type, ...rest } = metaInfo[key]
           const value = this.state[key]
 
           return (
-            <View key={key}>
+            <View key={key} style={styles.row}>
               {getIcon()}
               {type === 'slider'
                 ? <TrackerSlider 
@@ -149,6 +153,50 @@ class AddEntry extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: white,
+  },
+  row: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
+  iosSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    borderRadius: 7,
+    height: 45,
+    marginLeft: 40,
+    marginRight: 40,
+  },
+  androindSubmitBtn: {
+    backgroundColor: purple,
+    padding: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    height: 45,
+    borderRadius: 2,
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: white,
+    fontSize: 22,
+    textAlign: 'center',
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 30,
+    marginRight: 30,
+  }
+})
 
 function mapStateToProps(state) {
   const key = timeToString()
