@@ -10,6 +10,7 @@ import History from './components/History'
 import AddEntry from './components/AddEntry'
 import EntryDetail from './components/EntryDetail'
 import Live from './components/Live'
+import { setLocalNotification } from './utils/helpers'
 import { purple, white } from './utils/colors'
 
 function TrackerStatusBar ({ backgroundColor, ...props }) {
@@ -75,6 +76,10 @@ const MainNavigator = createStackNavigator({
 })
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer)}>

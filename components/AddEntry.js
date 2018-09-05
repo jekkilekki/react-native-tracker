@@ -4,7 +4,7 @@ import { View, ScrollView, TouchableOpacity, TouchableNativeFeedback, Text, Plat
 import { Ionicons } from '@expo/vector-icons'
 import { NavigationActions } from 'react-navigation'
 
-import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers'
+import { getMetricMetaInfo, timeToString, getDailyReminderValue, clearLocalNotification, setLocalNotification } from '../utils/helpers'
 import { submitEntry, removeEntry } from '../utils/api'
 import { addEntry } from '../actions'
 
@@ -88,7 +88,8 @@ class AddEntry extends Component {
 
     this.toHome()
     submitEntry({ key, entry })
-    // Clear local notification
+    clearLocalNotification()
+      .then(setLocalNotification())
   }
 
   reset = () => {
