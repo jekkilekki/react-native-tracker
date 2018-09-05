@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
 import { connect } from 'react-redux'
-import { recieveEntries, addEntry } from '../actions'
+import { receiveEntries, addEntry } from '../actions'
 import { timeToString, getDailyReminderValue } from '../utils/helpers'
 import { fetchCalendarResults } from '../utils/api'
 import { white } from '../utils/colors'
@@ -18,7 +18,7 @@ class History extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     fetchCalendarResults() 
-      .then((entries) => dispatch(recieveEntries(entries)))
+      .then((entries) => dispatch(receiveEntries(entries)))
       .then(({ entries }) => {
         if ( ! entries[timeToString()] ) {
           dispatch( addEntry({
@@ -34,17 +34,18 @@ class History extends Component {
   renderItem = ({ today, ...metrics }, formattedDate, key ) => (
     <View>
       {today
-        ? <View>
+        ? <View style={styles.item}>
             <DateHeader date={formattedDate} />
             <Text style={styles.noDataText}>
               {today}
             </Text>
           </View>
-        : <TouchableNativeFeedback onPress={() => console.log('Pressed!')}>
-            <View>
-              <MetricCard metrics={metrics} date={formattedDate} />
-            </View>
-          </TouchableNativeFeedback>
+        : <TouchableOpacity onPress={() => this.props.navigation.navigate(
+            'EntryDetail',
+            { entryId: key }
+          )}>
+            <MetricCard metrics={metrics} date={formattedDate} />
+          </TouchableOpacity>
       }
     </View>
   )
@@ -62,7 +63,7 @@ class History extends Component {
     const { entries } = this.props
     const { render } = this.state
 
-    if ( ready === false ) {
+    if ( render === false ) {
       return <AppLoading />
     }
 

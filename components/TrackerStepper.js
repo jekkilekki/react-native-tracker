@@ -8,40 +8,32 @@ export default function TrackerStepper({ max, unit, step, value, onIncrement, on
     <View style={[styles.row, {justifyContent: 'space-between'}]}>
       {Platform.OS === 'ios'
         ? <View style={{flexDirection: 'row'}}>
-            <TouchableNativeFeedback 
+            <TouchableOpacity 
               style={[styles.iosBtn, {borderTopRightRadius: 0, borderBottomRightRadius: 0}]}
               onPress={onDecrement}
             >
-              <View>
-                <Entypo name='minus' size={30} color={purple}/>
-              </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback 
+              <Entypo name='minus' size={30} color={purple}/>
+            </TouchableOpacity>
+            <TouchableOpacity 
               style={[styles.iosBtn, {borderTopRightRadius: 0, borderBottomRightRadius: 0}]}
               onPress={onIncrement}
             >
-              <View>
-                <Entypo name='plus' size={30} color={purple}/>
-              </View>
-            </TouchableNativeFeedback>
+              <Entypo name='plus' size={30} color={purple}/>
+            </TouchableOpacity>
           </View>
         : <View style={{flexDirection: 'row'}}>
-            <TouchableNativeFeedback 
+            <TouchableOpacity 
               style={[styles.mdBtn, {borderTopRightRadius: 0, borderBottomRightRadius: 0}]}
               onPress={onDecrement}
             >
-              <View>
-                <FontAwesome name='minus' size={30} color={white}/>
-              </View>
-            </TouchableNativeFeedback>
-            <TouchableNativeFeedback 
+              <FontAwesome name='minus' size={30} color={white}/>
+            </TouchableOpacity>
+            <TouchableOpacity 
               style={[styles.mdBtn, {borderTopRightRadius: 0, borderBottomRightRadius: 0}]}
               onPress={onIncrement}
             >
-              <View>
-                <FontAwesome name='plus' size={30} color={white}/>
-              </View>
-            </TouchableNativeFeedback>
+              <FontAwesome name='plus' size={30} color={white}/>
+            </TouchableOpacity>
           </View>
       }
       <View style={styles.metricCounter}>
@@ -71,7 +63,6 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 10,
     borderRadius: 2,
-    color: white,
     backgroundColor: purple,
   },
   metricCounter: {

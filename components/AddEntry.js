@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { View, ScrollView, TouchableOpacity, TouchableNativeFeedback, Text, Platform, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { NavigationActions } from 'react-navigation'
 
 import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers'
 import { submitEntry, removeEntry } from '../utils/api'
@@ -69,7 +70,6 @@ class AddEntry extends Component {
   submit = () => {
     const key = timeToString()
     const entry = this.state
-
     this.props.dispatch(addEntry({
       [key]: entry
     }))
@@ -86,23 +86,25 @@ class AddEntry extends Component {
       korean: 0,
     }))
 
-    // Navigate to home
-
+    this.toHome()
     submitEntry({ key, entry })
-
     // Clear local notification
   }
 
   reset = () => {
     const key = timeToString()
-
     this.props.dispatch(addEntry({
       [key]: getDailyReminderValue()
     }))
 
-    // Route to Home
-
+    this.toHome()
     removeEntry(key)
+  }
+
+  toHome = () => {
+    this.props.navigation.dispatch(NavigationActions.back({
+      key: 'AddEntry'
+    }))
   }
 
   render() {
