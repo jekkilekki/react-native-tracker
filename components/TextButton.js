@@ -12,7 +12,7 @@ export default function TextButton({ children, onPress, style = {} }) {
   )
 }
 
-const styles = StyleSheet.creat({
+const styles = StyleSheet.create({
   reset: {
     textAlign: 'center',
     color: purple,
